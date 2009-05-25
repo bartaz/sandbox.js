@@ -77,7 +77,7 @@ jQuery.fn.highlight = function(words, options) {
 	var settings = { className: 'highlight', element: 'span' };
 	$.extend(settings, options);
 	
-	if(words.constructor == String) { words = words.split(/\s/); }
+	if(words.constructor == String) { words = words.split(/\s+/); }
 	var re = new RegExp("\\b(" + words.join("|") + ")\\b");
 	
 	return this.each(function(){ jQuery.highlight(this, re, settings.element, settings.className );});
