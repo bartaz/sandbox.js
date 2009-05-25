@@ -1,5 +1,5 @@
 /*
- * jQuery Highligh plugin
+ * jQuery Highlight plugin
  *
  * Based on highlight v3 by Johann Burkard
  * http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
@@ -13,6 +13,11 @@
  *   // wrap every occurrance of word 'lorem' in content
  *   // with <span class='highlight'> (default options)
  *   $('#content').highlight('lorem');
+ *
+ *   // can search for and highlight more words at once
+ *   // so you can save some time on traversing DOM
+ *   $('#content').highlight(['lorem', 'ipsum']);
+ *   $('#content').highlight('lorem ipsum');
  *
  *   // wrap every occurrance of word 'ipsun' in content
  *   // with <em class='important'>
