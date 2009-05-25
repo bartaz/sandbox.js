@@ -50,8 +50,8 @@ jQuery.extend({
 			for (var i = 0; i < node.childNodes.length; ++i) {
 				i += jQuery.highlight(node.childNodes[i], word, nodeName, className);
 			}
-			return 0;
 		}
+		return 0;
 	}
 });
 
