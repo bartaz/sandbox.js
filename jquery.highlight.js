@@ -32,7 +32,7 @@
  *
  * Copyright (c) 2009 Bartek Szopka
  *
- * Licensed MIT license.
+ * Licensed under MIT license.
  *
  */
 
