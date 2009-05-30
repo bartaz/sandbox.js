@@ -1,5 +1,5 @@
 /*
- * spec.js
+ * specify.js
  *
  * Very simple JavaScript test runner that used BDD-style notation (like RSpec)
  * and displays test results using browser console (so make sure you have Firebug
@@ -22,11 +22,11 @@ function extend(target, source){
 	return target;
 }
 
-spec = window.spec = function(name, specs) {
-	spec.runner.runGroup(name, specs);
+specify = window.specify = function(name, specs) {
+	specify.runner.runGroup(name, specs);
 };
 
-extend(spec, {
+extend(specify, {
 	pass: function() {
 		throw { status : "passed", message : "passed" }
 	},
@@ -49,7 +49,7 @@ extend(spec, {
 	}
 });
 
-spec.log = {
+specify.log = {
 	passed: function(){ console.info.apply(this, arguments); },
 	failed: function(){ console.error.apply(this, arguments); },
 	pending: function(){ console.warn.apply(this, arguments); },
@@ -57,27 +57,23 @@ spec.log = {
 	groupEnd: function(){ console.groupEnd.apply(this, arguments); }
 };
 
-spec.runner = {
+specify.runner = {
 	runGroup: function(name, tests){
-		spec.log.group(name)
-
-		var beforeEach = tests["beforeEach"];
-		delete tests["beforeEach"];
+		specify.log.group(name)
 
 		for(var test in tests){
-			if(beforeEach) beforeEach.apply(spec.expectation);
 			this.run(test, tests[test]);
 		}
-		spec.log.groupEnd();
+		specify.log.groupEnd();
 	},
 
 	run: function(name, test){
 		try {
-			test.apply(spec.expectation);
-			spec.pass();
+			test.apply(specify.expectation);
+			specify.pass();
 		} catch (result) {
 			if(result.status){
-				spec.log[result.status](name, "--", test, result.message);
+				specify.log[result.status](name, "--", test, result.message);
 			} else {
 				throw result;
 			}
@@ -85,37 +81,37 @@ spec.runner = {
 	}
 }
 
-spec.expectation = function(value){
+specify.expectation = function(value){
 	return {
 		should_be: function(expected, message){
-			return spec.equal(value, expected, message);
+			return specify.equal(value, expected, message);
 		},
 
 		should_not_be: function(unexpected, message){
-			return spec.unequal(value, unexpected, message);
+			return specify.unequal(value, unexpected, message);
 		},
 
 		should_be_a: function(expectedType, message){
 			if(expectedType.constructor === Function) value = value.constructor
 			else value = typeof value;
-			return spec.equal(value, expectedType, message);
+			return specify.equal(value, expectedType, message);
 		},
 
 		should_be_true: function(message){
-			return spec.equal(!!value, true, message || "expected " + value + " to be true");
+			return specify.equal(!!value, true, message || "expected " + value + " to be true");
 		}
 	}
 }
 
-extend(spec.expectation, {
-	pass: spec.pass,
-	is_ok: spec.pass,
+extend(specify.expectation, {
+	pass: specify.pass,
+	is_ok: specify.pass,
 
-	fail: spec.fail,
-	is_not_ok: spec.fail,
+	fail: specify.fail,
+	is_not_ok: specify.fail,
 
-	pending: spec.pending,
-	is_pending: spec.pending,
+	pending: specify.pending,
+	is_pending: specify.pending,
 });
 
 })();
