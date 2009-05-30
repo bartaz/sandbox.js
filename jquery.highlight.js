@@ -38,9 +38,9 @@
 
 jQuery.extend({
 	highlight: function(node, re, nodeName, className) {
-		if (node.nodeType == 3) {
+		if (node.nodeType === 3) {
 			var match = node.data.match(re);
-			if(match) {
+			if (match) {
 				var highlight = document.createElement(nodeName || 'span');
 				highlight.className = className || 'highlight';
 				var wordNode = node.splitText(match.index);
@@ -50,7 +50,9 @@ jQuery.extend({
 				wordNode.parentNode.replaceChild(highlight, wordNode);
 				return 1; //skip added node in parent
 			}
-		} else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
+		} else if ((node.nodeType === 1 && node.childNodes) // only element nodes that have children
+				&& !/(script|style)/i.test(node.tagName) // ignore script and style nodes
+				&& !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
 			for (var i = 0; i < node.childNodes.length; ++i) {
 				i += jQuery.highlight(node.childNodes[i], re, nodeName, className);
 			}
@@ -61,24 +63,28 @@ jQuery.extend({
 
 jQuery.fn.removeHighlight = function(options) {
 	var settings = { className: 'highlight', element: 'span' };
-	$.extend(settings, options);
+	jQuery.extend(settings, options);
 
 	return this.find(settings.element + "." + settings.className).each(function() {
-		// TODO: what is this for? :)
-		this.parentNode.firstChild.nodeName;
-		with (this.parentNode) {
-			replaceChild(this.firstChild, this);
-			normalize();
-		}
+		var parent = this.parentNode;
+		parent.replaceChild(this.firstChild, this);
+		parent.normalize();
 	}).end();
 };
 
 jQuery.fn.highlight = function(words, options) {
-	var settings = { className: 'highlight', element: 'span' };
-	$.extend(settings, options);
+	var settings = { className: 'highlight', element: 'span', ignoreCase: false, wordsOnly: false };
+	jQuery.extend(settings, options);
 	
-	if(words.constructor == String) { words = words.split(/\s+/); }
-	var re = new RegExp("\\b(" + words.join("|") + ")\\b");
+	if (words.constructor === String) { words = words.split(/\s+/); }
+
+	var flag = settings.ignoreCase ? "i" : "";
+	var pattern = "(" + words.join("|") + ")";
+	if (settings.wordsOnly) {
+		pattern = "\\b" + pattern + "\\b";
+	}
+	var re = new RegExp(pattern, flag);
 	
 	return this.each(function(){ jQuery.highlight(this, re, settings.element, settings.className );});
-}
+};
+
