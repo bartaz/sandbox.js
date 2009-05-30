@@ -6,20 +6,27 @@
  *
  * Code a little bit refactored and cleaned (in my humble opinion).
  * Most important changes:
- *  - highlights whole words only, case sensitive
- *  - element tag and class names can be specified in options
+ *  - has an option to highlight only entire words only (wordsOnly - false by default),
+ *  - has an option to ignore case (ignoreCase - false by default)
+ *  - highlight element tag and class names can be specified in options
  *
  * Usage:
- *   // wrap every occurrance of word 'lorem' in content
+ *   // wrap every occurrance of text 'lorem' in content
  *   // with <span class='highlight'> (default options)
  *   $('#content').highlight('lorem');
  *
- *   // can search for and highlight more words at once
+ *   // search for and highlight more terms at once
  *   // so you can save some time on traversing DOM
  *   $('#content').highlight(['lorem', 'ipsum']);
  *   $('#content').highlight('lorem ipsum');
  *
- *   // wrap every occurrance of word 'ipsun' in content
+ *   // search only for entire word 'lorem'
+ *   $('#content').highlight('lorem', { wordsOnly: true });
+ *
+ *   // ignore case during search of term 'lorem'
+ *   $('#content').highlight('lorem', { ignoreCase: true });
+ *
+ *   // wrap every occurrance of term 'ipsum' in content
  *   // with <em class='important'>
  *   $('#content').highlight('ipsum', { element: 'em', className: 'important' });
  *
