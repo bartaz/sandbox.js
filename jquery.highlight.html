@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>jQuery Highlight Plugin test</title>
+
+	<link rel="stylesheet" href="style.css" type="text/css"  />
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js">
+	</script>
+	<script type="text/javascript" src="http://github.com/bartaz/sandbox.js/raw/master/jquery.highlight.js">
+	</script>
+
+	<script type="text/javascript">
+		//<![CDATA[
+		$(function () {
+			$(".runnable")
+				.attr({ title: "Click to run this script" })
+				.css({ cursor: "pointer"})
+				.click(function () {
+					// here be eval!
+					eval($(this).text());
+				});
+
+			$('h1').highlight('highlight');
+		});
+		//]]>
+	</script>
+
+
+</head>
+<body>
+	<h1>jQuery Highlight Plugin</h1>
+	<p>It will probably not be a big surprise that jQuery Highlight plugin can be used to highlight pieces of text on a page. It's based on great <a href="http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html">Highlight plugin</a> by <a href="http://johannburkard.de">Johann Burkard</a>. To be honest most of the credit should go to him, as all I did was a little refactoring and customisation (so blame me if I broke something).</p>
+	<h2 id="how">How does it work</h2>
+	<p>See the highlighted word in the title of this page? The code shown below was used to do it.</p>
+	<ol class="javascript code">
+		<li><code>$("h1").highlight("highlight");</code></li>
+	</ol>
+	<p>Highlight plugin searches through the text of given elements (<code>&lt;h1&gt;</code> in this case) to find the term (word 'highlight' in our example) to highlight. When the term is found it's simply wrapped with a <code>&lt;span class="highlight"&gt;</code> element (other element and class names can be given as parameters &ndash; <a href="#element_and_className">we will discuss it later</a>).</p>
+	<p>Wrapping found terms with elements is all this plugin does, so to visually highlight them you need to define some CSS rule, for example:</p>
+	<ol class="css code">
+		<li><code>.highlight {</code></li>
+		<li><code>    background-color: #FFFF88;</code></li>
+		<li><code>}</code></li>
+	</ol>
+	<p>If you don't want to define such rule in CSS, you can do whatever you need with highlighted elements using jQuery. The code below will have the same effect as CSS rule above.</p>
+	<ol class="javascript code">
+		<li><code>$(".highlight").css({ backgroundColor: "#FFFF88" });</code></li>
+	</ol>
+	<h2 id="demo">Demo and usage</h2>
+	<p>All the code samples below are runnable. Simply click on them to run the code on this page.</p>
+	<h3 id="basic">Basic usage</h3>
+	<p>As we already shown above in <a href="#how">How does it work</a> section, you can highlight text in any elements simply by running <code>highlight</code> function on them. So to highlight word 'highlight' in every paragraph of this page run:</p>
+	<ol class="javascript runnable code">
+		<li><code>$("body p").highlight("highlight");</code></li>
+	</ol>
+	<p>To remove the highlight within given element run <code>unhighlight</code> function, just like this:</p>
+	<ol class="javascript runnable code">
+		<li><code>$("body p").unhighlight();</code></li>
+	</ol>
+	<p>Of course you don't have to limit yourself to short search terms:</p>
+	<ol class="javascript runnable code">
+		<li><code>$("body p").highlight("jQuery highlight plugin");</code></li>
+	</ol>
+	<p>but be aware that this plugin will only find text that is contained by single element, so if search term will be splitted into more than one node, it wont get highlighted.</p>
+	<p>You can highlight more than one text at once by running <code>highlight</code> with an array of terms as a first attribute. It's much faster than running the <code>highlight</code> function several times.</p>
+	<ol class="javascript runnable code">
+		<li><code>$("body p").highlight(["jQuery", "highlight", "plugin"]);</code></li>
+	</ol>
+	<h3 id="options">Options</h3>
+	<p>There are several options that can be given as second parameter to change the way <code>highlight</code> function behaves.</p>
+	<h4 id="caseSensitive"><code>caseSensitive</code></h4>
+	<p>The option called <code>caseSensitive</code> defaults to <code>false</code> and controlls if the case of the text should be significant during search.</p>
+	<p>If you don't want to ignore the case of the words, change this value to <code>true</code>, like in the example below:</p>
+	<ol class="javascript runnable code">
+		<li><code>$("body p").highlight("Highlight", { caseSensitive: true });</code></li>
+	</ol>
+	<p>The code above should highlight only 'highlight' words that start with capital letter, like this one: Highlight.
+	<h4 id="wordsOnly"><code>wordsOnly</code></h4>
+	<p>Option <code>wordsOnly</code> can be used to search for whole words (not just pieces of text). It defaults to <code>false</code>, so each ocurrence of search term is highlighted.</p>
+	<p>If you want only to highlight whole words, turn <code>wordsOnlu</code> option to <code>true</code>:
+	<ol class="javascript runnable code">
+		<li><code>$("body p").highlight("light", { wordsOnly: true });</code></li>
+	</ol>
+	<p>The sample above should highlight only the exact 'light' words, not the 'light' text in 'highlight'.</p>
+	<h4 id="element_and_className"><code>element</code>, <code>className</code></h4>
+	<p>You are not limited just to <code>&lt;span class="highlight"&gt;</code> elements. Element and class names are controlled by options called <code>element</code> (defaults to <code>span</code>) and <code>className</code> (defaults to <code>highlight</code>).</p>
+	<p>If you want to change element and/or class name used while highlighting change the values of <code>element</code> and <code>className</code> while running highlight:</p>
+	<ol class="javascript runnable code">
+		<li><code>$("body p").highlight("highlight", { element: 'em', className: 'error' });</code></li>
+	</ol>
+	<p>Remember that <code>unhighlight</code> function removes the highlight based on element and class names, so if you change these options while highlighting you need to pass them also to <code>unhighlight</code>:
+		<ol class="javascript runnable code">
+		<li><code>$("body p").unhighlight({ element: 'em', className: 'error' });</code></li>
+	</ol>
+	<p>Thanks to jQuery, you can do simply everything with highlighted elements. For example these simple two lines of code below turn each reference to jQuery into a link to jQuery home page:</p>
+	<ol class="javascript runnable code">
+		<li><code>$("body p").highlight("jQuery", { element: 'a', className: 'jQueryLink'});</code></li>
+		<li><code>$("body p a.jQueryLink").attr({ href: 'http://jquery.com' });</code></li>
+	</ol>
+	<h2 id="getit">Where to get it?</h2>
+	<p>jQuery Highlight plugin is licensed under <a href="http://www.opensource.org/licenses/mit-license.php" rel="license" title="View full text of MIT license">MIT license</a>. The <a href="http://github.com/bartaz/sandbox.js/blob/master/jquery.highlight.js" title="View the source on GitHub">source code is available in my sandbox</a> on GitHub, so feel free to get or fork it from there. You can also use a direct link to <a href="http://github.com/bartaz/sandbox.js/raw/master/jquery.highlight.js">jquery.highlight.js</a> file.</p>
+	<p id="copyright">Copyright &copy; 2009 Bartek Szopka <a href="http://www.itsabodybuildingblog.com">itsabodybuildingblog.com</a></p>
+</body>
+</html>
