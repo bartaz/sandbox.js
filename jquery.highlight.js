@@ -7,7 +7,7 @@
  * Code a little bit refactored and cleaned (in my humble opinion).
  * Most important changes:
  *  - has an option to highlight only entire words only (wordsOnly - false by default),
- *  - has an option to ignore case (ignoreCase - false by default)
+ *  - has an option to be case sensitive (caseSensitive - false by default)
  *  - highlight element tag and class names can be specified in options
  *
  * Usage:
@@ -23,18 +23,18 @@
  *   // search only for entire word 'lorem'
  *   $('#content').highlight('lorem', { wordsOnly: true });
  *
- *   // ignore case during search of term 'lorem'
- *   $('#content').highlight('lorem', { ignoreCase: true });
+ *   // don't ignore case during search of term 'lorem'
+ *   $('#content').highlight('lorem', { caseSensitive: true });
  *
  *   // wrap every occurrance of term 'ipsum' in content
  *   // with <em class='important'>
  *   $('#content').highlight('ipsum', { element: 'em', className: 'important' });
  *
  *   // remove default highlight
- *   $('#content').removeHighlight();
+ *   $('#content').unhighlight();
  *
  *   // remove custom highlight
- *   $('#content').removeHighlight({ element: 'em', className: 'important' });
+ *   $('#content').unhighlight({ element: 'em', className: 'important' });
  *
  *
  * Copyright (c) 2009 Bartek Szopka
@@ -68,7 +68,7 @@ jQuery.extend({
     }
 });
 
-jQuery.fn.removeHighlight = function (options) {
+jQuery.fn.unhighlight = function (options) {
     var settings = { className: 'highlight', element: 'span' };
     jQuery.extend(settings, options);
 
@@ -80,14 +80,14 @@ jQuery.fn.removeHighlight = function (options) {
 };
 
 jQuery.fn.highlight = function (words, options) {
-    var settings = { className: 'highlight', element: 'span', ignoreCase: false, wordsOnly: false };
+    var settings = { className: 'highlight', element: 'span', caseSensitive: false, wordsOnly: false };
     jQuery.extend(settings, options);
     
     if (words.constructor === String) {
         words = words.split(/\s+/);
     }
 
-    var flag = settings.ignoreCase ? "i" : "";
+    var flag = settings.caseSensitive ? "" : "i";
     var pattern = "(" + words.join("|") + ")";
     if (settings.wordsOnly) {
         pattern = "\\b" + pattern + "\\b";
