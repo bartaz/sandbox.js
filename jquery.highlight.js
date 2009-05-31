@@ -84,7 +84,7 @@ jQuery.fn.highlight = function (words, options) {
     jQuery.extend(settings, options);
     
     if (words.constructor === String) {
-        words = words.split(/\s+/);
+        words = [words];
     }
 
     var flag = settings.caseSensitive ? "" : "i";
