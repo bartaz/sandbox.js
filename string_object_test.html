@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>Taskboard release name for today...</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
+	<script type="text/javascript">
+		//<![CDATA[
+		
+		// truncate from prototype.js
+		String.prototype.truncate = function(length, truncation) {
+			length = length || 30;
+			truncation = truncation === undefined ? '...' : truncation;
+			return this.length > length ?
+				this.slice(0, length - truncation.length) + truncation : this;
+		};
+		
+		// simple case of returning String object
+		String.prototype.self = function(){ return this; }
+		
+		var cases = {
+			"string": "testing",
+			"newString": new String("testing"),
+			"truncateToThis": "testing".truncate(10),
+			"truncateToNew": "testing".truncate(5),
+			"self": "testing".self()
+		};
+		
+		$(function(){
+			for(id in cases){
+			try {
+				$("#" + id).html(cases[id]).addClass("passed");
+			} catch (e) {
+				$("#" + id).addClass("error")
+					.append(e.message).append("<br/>")
+					.append(e.filename + ":" + e.lineNumber);
+			}
+			}
+		});
+		//]]>
+	</script>
+	<style type="text/css">
+	.error { color: red; }
+	.passed { color: green; }
+	</style>
+</head>
+<body>
+<p>Trying to run <code>jQuery.fn.html("testing")</code> passes, as it's simple string:</p>
+<div id="string"></div>
+<p>Trying to run <code>jQuery.fn.html(new String("testing"))</code>:</p>
+<div id="newString"></div>
+<p>Trying to run <code>jQuery.fn.html("testing".truncate(10))</code>:</p>
+<div id="truncateToThis"></div>
+<p>Trying to run <code>jQuery.fn.html("testing".truncate(5))</code>:</p>
+<div id="truncateToNew"></div>
+<p>Trying to run <code>jQuery.fn..html("testing".self())</code>:</p>
+<div id="self"></div>
+</body>
+</html>
+
