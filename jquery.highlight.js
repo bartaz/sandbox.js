@@ -86,6 +86,10 @@ jQuery.fn.highlight = function (words, options) {
     if (words.constructor === String) {
         words = [words];
     }
+    words = words.filter(function(word) {
+      return word != '';
+    });
+    if (words.length == 0) { return this; };
 
     var flag = settings.caseSensitive ? "" : "i";
     var pattern = "(" + words.join("|") + ")";
