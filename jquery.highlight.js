@@ -6,7 +6,7 @@
  *
  * Code a little bit refactored and cleaned (in my humble opinion).
  * Most important changes:
- *  - has an option to highlight only entire words only (wordsOnly - false by default),
+ *  - has an option to highlight only entire words (wordsOnly - false by default),
  *  - has an option to be case sensitive (caseSensitive - false by default)
  *  - highlight element tag and class names can be specified in options
  *
